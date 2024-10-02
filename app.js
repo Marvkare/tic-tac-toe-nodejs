@@ -9,7 +9,7 @@ const path = require('path');
 const sharedSession = require('socket.io-express-session');
 
 let games = {};  // Aquí almacenaremos las salas y el estado de cada partida
-
+const casillasSeleccionadas = {};
 
 const app = express();
 const server = http.createServer(app);
@@ -142,7 +142,8 @@ io.on('connection', (socket) => {
             games[room] = {
                 players: {},
                 board: Array(9).fill(null),
-                currentPlayer: 'red',  // El jugador rojo empieza
+                currentPlayer: 'red',// El jugador rojo empieza
+                movimientos: [],  
             };
         }
 
@@ -162,8 +163,33 @@ io.on('connection', (socket) => {
         socket.on('playerMove', (index) => {
             if (games[room].players[games[room].currentPlayer] === socket.id) {
                 games[room].board[index] = games[room].currentPlayer;  // Actualizar el tablero
-                io.to(room).emit('moveMade', { index, color: games[room].currentPlayer });
-
+                const jugador = games[room].currentPlayer;
+                const color = games[room].currentPlayer === 'red' ? 'rojo' : 'azul';
+                
+                 // Guardar la información de la casilla seleccionada
+                games[room].movimientos.push({
+                casilla: index,
+                jugador: jugador,
+                color: color
+                });
+                
+                 // Enviar la actualización del juego a todos los jugadores en la sala
+                    io.to(room).emit('moveMade', {
+                    index: index,
+                    color: games[room].currentPlayer,
+                    casillasSeleccionadas: games[room].movimientos,
+                    jugador: jugador
+                    });
+                    //Actualizar el tablero
+                    console.log(games[room].movimientos);
+                    io.to(room).emit('updateBoard', games[room].movimientos);
+                
+                /*Verificar si hay un ganador
+                const winner = checkForWinner(games[room].board);
+                if (winner) {
+                    io.to(room).emit('gameOver', winner);
+                    return;
+                }*/
                 // Cambiar de turno
                 games[room].currentPlayer = games[room].currentPlayer === 'red' ? 'blue' : 'red';
                 io.to(room).emit('turn', games[room].currentPlayer);  // Informar del nuevo turno

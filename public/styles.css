@@ -59,3 +59,12 @@ button {
 
 #info { margin-top: 20px; font-size: 18px; }
 .disabled { pointer-events: none; opacity: 0.6; }
+
+
+.board-red {
+  background-color: red;
+}
+
+.board-blue {
+  background-color: blue;
+}
