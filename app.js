@@ -135,7 +135,7 @@ io.on('connection', (socket) => {
     // Asignar el jugador a una sala
     socket.on('joinGame', () => {
         let room = findAvailableRoom();
-
+        
         socket.join(room);
 
         if (!games[room]) {
@@ -146,33 +146,108 @@ io.on('connection', (socket) => {
                 movimientos: [],  
             };
         }
+        // Obtener el nombre de usuario de la sesión
+        const username = socket.handshake.session.user ? socket.handshake.session.user.username : 'Unknown';
 
+        io.to(room).emit('updateBoard', games[room].movimientos);
         // Asignar color al jugador
         if (!games[room].players.red) {
-            games[room].players.red = socket.id;
+            games[room].players.red =  { id: socket.id, name: username };
             socket.emit('assignColor', 'red');
         } else if (!games[room].players.blue) {
-            games[room].players.blue = socket.id;
+            games[room].players.blue =  { id: socket.id, name: username };
             socket.emit('assignColor', 'blue');
         }
 
+         // Informar a todos los jugadores en la sala los nombres de los jugadores
+        io.to(room).emit('playersroomInfo', {
+            red: games[room].players.red ? games[room].players.red.name : null,
+            blue: games[room].players.blue ? games[room].players.blue.name : null
+        });
+
         // Informar a los jugadores de quién es el turno actual
         io.to(room).emit('turn', games[room].currentPlayer);
+        
+        
+            
+        // Manejar la desconexión del jugador
+        socket.on('exitroom', () => {
+            console.log('Un jugador se ha desconectado:-', socket.id);
+            games[room].movimientos = [];
+            games[room].board = Array(9).fill(null);
+            console.log(games[room].movimientos);
+            io.to(room).emit('updateBoard', games[room].movimientos);
+            // Buscar en qué sala estaba el jugador desconectado
+            for (let room in games) {
+                
+                if (games[room].players.red && games[room].players.red.id === socket.id) {
+                    // El jugador rojo se desconectó
+                    io.to(room).emit('playerDisconnected', { color: 'red', name: games[room].players.red.name });
+                    delete games[room].players.red;
+                } else if (games[room].players.blue && games[room].players.blue.id === socket.id) {
+                    // El jugador azul se desconectó
+                    io.to(room).emit('playerDisconnected', { color: 'blue', name: games[room].players.blue.name });
+                    delete games[room].players.blue;
+                }
 
+                // Si ambos jugadores están desconectados, eliminar la sala
+                if (!games[room].players.red && !games[room].players.blue) {
+                    
+                    delete games[room];
+                    console.log("Se elimino la sala")
+                }
+            }
+        });
+
+        socket.on('gameWon', (winner) => {
+        const winnerColor = winner === 'X' ? 'rojo' : 'azul';
+        const currentRoom = games[room];
+        
+        // Identifica el jugador ganador y perdedor
+        let ganadorSocketId;
+        let perdedorSocketId;
+
+        if (currentRoom.players.red && winnerColor === 'rojo') {
+            ganadorSocketId = currentRoom.players.red.id;
+            perdedorSocketId = currentRoom.players.blue.id;
+        } else if (currentRoom.players.blue && winnerColor === 'azul') {
+            ganadorSocketId = currentRoom.players.blue.id;
+            perdedorSocketId = currentRoom.players.red.id;
+        }
+
+        // Enviar mensaje al ganador
+        if (ganadorSocketId) {
+            io.to(ganadorSocketId).emit('youWon', {
+                message: '¡Felicidades! Ganaste la partida',
+                winnerColor: winnerColor
+            });
+        }
+
+        // Enviar mensaje al perdedor
+        if (perdedorSocketId) {
+            io.to(perdedorSocketId).emit('youLost', {
+                message: 'Lo siento, perdiste la partida',
+                winnerColor: winnerColor
+            });
+        }
+    });
+ 
         // Manejar el movimiento del jugador
         socket.on('playerMove', (index) => {
-            if (games[room].players[games[room].currentPlayer] === socket.id) {
+           
+            if (games[room].players[games[room].currentPlayer].id === socket.id) {
                 games[room].board[index] = games[room].currentPlayer;  // Actualizar el tablero
                 const jugador = games[room].currentPlayer;
                 const color = games[room].currentPlayer === 'red' ? 'rojo' : 'azul';
-                
+                console.log(jugador);
                  // Guardar la información de la casilla seleccionada
                 games[room].movimientos.push({
                 casilla: index,
                 jugador: jugador,
                 color: color
                 });
-                
+                io.to(room).emit('updateBoard', games[room].movimientos);
+
                  // Enviar la actualización del juego a todos los jugadores en la sala
                     io.to(room).emit('moveMade', {
                     index: index,
@@ -182,7 +257,7 @@ io.on('connection', (socket) => {
                     });
                     //Actualizar el tablero
                     console.log(games[room].movimientos);
-                    io.to(room).emit('updateBoard', games[room].movimientos);
+                    
                 
                 /*Verificar si hay un ganador
                 const winner = checkForWinner(games[room].board);
@@ -193,25 +268,14 @@ io.on('connection', (socket) => {
                 // Cambiar de turno
                 games[room].currentPlayer = games[room].currentPlayer === 'red' ? 'blue' : 'red';
                 io.to(room).emit('turn', games[room].currentPlayer);  // Informar del nuevo turno
+            }else{
+                console.log('hay algo raro');
             }
+        
+    
         });
 
-        // Manejar desconexión del jugador
-        socket.on('disconnect', () => {
-            console.log('Un usuario se ha desconectado:', socket.id);
-
-            // Eliminar al jugador desconectado de la sala
-            if (games[room].players.red === socket.id) {
-                delete games[room].players.red;
-            } else if (games[room].players.blue === socket.id) {
-                delete games[room].players.blue;
-            }
-
-            // Si ambos jugadores están desconectados, eliminar la sala
-            if (!games[room].players.red && !games[room].players.blue) {
-                delete games[room];
-            }
-        });
+       
     });
 });
 

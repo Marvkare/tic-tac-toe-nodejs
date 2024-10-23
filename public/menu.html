@@ -38,201 +38,24 @@
     <div id="multiplayer-board" style="display:none;">
         <h1>Juego de Turnos Multijugador</h1>
       <div class="board" id="board">
-        <div class="cell" id="mp-cell-0" onclick="makeMove(0)"></div>
-        <div class="cell" id="mp-cell-1" onclick="makeMove(1)"></div>
-        <div class="cell" id="mp-cell-2" onclick="makeMove(2)"></div>
-        <div class="cell" id="mp-cell-3" onclick="makeMove(3)"></div>
-        <div class="cell" id="mp-cell-4" onclick="makeMove(4)"></div>
-        <div class="cell" id="mp-cell-5" onclick="makeMove(5)"></div>
-        <div class="cell" id="mp-cell-6" onclick="makeMove(6)"></div>
-        <div class="cell" id="mp-cell-7" onclick="makeMove(7)"></div>
-        <div class="cell" id="mp-cell-8" onclick="makeMove(8)"></div>
+        <div class="mp-cell" id="mp-cell-0" onclick="makeMove(0)"></div>
+        <div class="mp-cell" id="mp-cell-1" onclick="makeMove(1)"></div>
+        <div class="mp-cell" id="mp-cell-2" onclick="makeMove(2)"></div>
+        <div class="mp-cell" id="mp-cell-3" onclick="makeMove(3)"></div>
+        <div class="mp-cell" id="mp-cell-4" onclick="makeMove(4)"></div>
+        <div class="mp-cell" id="mp-cell-5" onclick="makeMove(5)"></div>
+        <div class="mp-cell" id="mp-cell-6" onclick="makeMove(6)"></div>
+        <div class="mp-cell" id="mp-cell-7" onclick="makeMove(7)"></div>
+        <div class="mp-cell" id="mp-cell-8" onclick="makeMove(8)"></div>
     </div> 
-           
+        <div id="jugadoreslist"></div>
+           <button onclick="exitGame()">Avandonar el juego</button>
         <div id="info">Infomacion</div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="./menu.js"></script>
-    <script>
-
-        //codigos de colores para los tableron en los tres turnos
-        //Turno A
-        var color1 ='417bf0'
-        //Turno B
-        var color2 = '#f84444'
-        //Turno de espera
-        var color3 = 'c573f4'
-        
-        var casillasSeleccionadas ={}
-
-        // Obtener el nombre de usuario de la sesión
-        fetch('/user-info')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                document.getElementById('username').textContent = data.username;
-                loadRanking();
-            })
-            .catch(err => console.error('Error fetching user data:', err));
-
-        function startSinglePlayer() {
-            document.getElementById('menu').style.display = 'none';
-            document.getElementById('game-board').style.display = 'block';
-        }
-
-        function startMultiplayer() {
-            // Ocultar el menú y mostrar el tablero multijugador
-            document.getElementById('menu').style.display = 'none';
-            document.getElementById('multiplayer-board').style.display = 'block';
-
-            // Emitir evento para unirse a una sala multijugador
-            socket.emit('joinGame');
-        }
-
-        function loadRanking() {
-            // Obtener el ranking del servidor y mostrarlo
-        }
-
-        function logout() {
-            window.location.href = '/logout';
-        }
-
-        // Código para el modo jugador contra máquina
-        let board = Array(9).fill(null);
-        let currentPlayer = 'X';
-
-        function playerMove(index) {
-            if (!board[index]) {
-                board[index] = currentPlayer;
-                document.getElementById(`cell-${index}`).textContent = currentPlayer;
-                if (checkWinner(currentPlayer)) {
-                    setTimeout(() => alert('You win!'), 100);
-                    resetGame();
-                } else if (board.includes(null)) {
-                    setTimeout(machineMove, 500);
-                } else {
-                    setTimeout(() => alert('It\'s a draw!'), 100);
-                    resetGame();
-                }
-            }
-        }
-
-        function machineMove() {
-            let emptyCells = board.map((val, idx) => val === null ? idx : null).filter(val => val !== null);
-            let randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            board[randomCell] = 'O';
-            document.getElementById(`cell-${randomCell}`).textContent = 'O';
-
-            if (checkWinner('O')) {
-                setTimeout(() => alert('Machine wins!'), 100);
-                resetGame();
-            }
-        }
-
-        function checkWinner(player) {
-            const winningCombinations = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],  // Rows
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],  // Columns
-                [0, 4, 8], [2, 4, 6]              // Diagonals
-            ];
-            return winningCombinations.some(combination => {
-                return combination.every(index => board[index] === player);
-            });
-        }
-
-        function resetGame() {
-            board = Array(9).fill(null);
-            document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
-        }
-
-        // Código para multijugador
-        const socket = io();
-        let myColor = null;
-        let isMyTurn = false;
-
-        // Asignar color cuando el servidor lo envía
-        socket.on('assignColor', (color) => {
-            myColor = color;
-            document.getElementById('info').textContent = `Eres el jugador ${color.toUpperCase()}`;
-            updateBoard();
-        });
-
-        // Actualizar el turno actual
-        socket.on('turn', (currentTurn) => {
-            isMyTurn = (currentTurn === myColor);
-                
-                document.getElementById('board').style.setProperty('background-color', isMyTurn ? (myColor === 'red' ? '#ff0000' : '#0000ff') : '#808080');
-            
-                if (isMyTurn) {
-                document.getElementById('info').textContent = 'Es tu turno';
-            } else {
-                document.getElementById('info').textContent = 'Es el turno del oponente';
-            }
-            toggleBoard(isMyTurn);
-        });
-
-        // Actualizar el tablero cuando un movimiento es realizado
-        socket.on('moveMade', (data) => {
-            const index = data.index;
-            const color = data.color;
-            casillasSeleccionadas = data.casillasSeleccionadas;
-            const jugador = data.jugador;
-             // Actualizar la interfaz HTML para mostrar las casillas seleccionadas
-           /* const casilla = document.getElementById(`cell-${index}`);
-            casilla.textContent = color === 'red' ? 'X' : 'O';
-            casilla.style.backgroundColor = color === 'red' ? 'red' : 'blue';
-                */
-            // Desactivar las casillas ya seleccionadas
-            casillasSeleccionadas.forEach((movimiento) => {
-                const casilla = document.getElementById(`mp-cell-${movimiento.casilla}`);
-                casilla.disabled = true;
-            });
-
-        });
-
-
-   // actualizar el tablero en cada turno
-       
-        function updateBoard(casillasSeleccionadas) {
-            // Actualizar la interfaz HTML para mostrar las casillas seleccionadas
-
-            console.log("se actulizo la interfaz HTML");
-            console.log(casillasSeleccionadas);
-            casillasSeleccionadas.forEach((movimiento) => {
-                console.log(movimiento);
-                const casilla = document.getElementById(`mp-cell-${movimiento.casilla}`);// Agregar una etiqueta a la casilla
-                casilla.innerHTML = movimiento.color === 'red' ? '<span style="color: white">X</span>' : '<span style="color: white">O</span>';
-                casilla.style.backgroundColor = movimiento.color === 'red' ? 'red' : 'blue';
-            });
-        }
- 
-
-        socket.on('updateBoard', (data) => {
-           setTimeout(() => {
-               
-            updateBoard(data);   
-           },40); 
-        })
-     
-        // Realizar un movimiento
-        function makeMove(index) {
-            if (isMyTurn) {
-                socket.emit('playerMove', index);
-            }
-        }
-
-        // Bloquear o desbloquear el tablero según el turno
-        function toggleBoard(enable) {
-            const cells = document.querySelectorAll('.cell');
-            cells.forEach(cell => {
-                if (enable) {
-                    cell.classList.remove('disabled');
-                } else {
-                    cell.classList.add('disabled');
-                }
-            });
-        }
-    </script>
+    <script src="./js/multiplayer.js"></script>
+    <script src="./js/singleplayer.js"></script>
 </body>
 </html>
