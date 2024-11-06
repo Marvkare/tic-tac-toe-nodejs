@@ -1,10 +1,24 @@
+
+/* INDEX CSS INIT */
+
+
+/* INDEX CSS END */
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+    background-color: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
 }
+#multiplayer-board {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
 #game {
     width: 100%;
@@ -40,31 +54,70 @@ button {
     display: grid;
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(3, 100px);
-    gap: 5px;
+    gap: 10px;
 }
 
 
 
 .mp-cell {
-    width: 100px;
-    height: 100px;
-    background-color: #f0f0f0;
-    font-size: 2em;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 100px;
-    cursor: pointer;
-    border: 1px solid #000;
+   width: 100px;
+            height: 100px;
+            background-color: #444;
+            border: 3px solid #fff; /* Borde blanco */
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Sombra para efecto metálico */
 }
+
+.mp-cell:hover {
+            box-shadow: 0 0 20px #0ff, 0 0 40px #0ff; /* Efecto neón al pasar el cursor */
+        }
+.mp-cell.selected {
+            box-shadow: 0 0 20px #fff, 0 0 40px #fff; /* Efecto neón blanco al seleccionar */
+        }
+#jugadoreslist, #info {
+            margin-top: 10px;
+        }
 
 #info { margin-top: 20px; font-size: 18px; }
 .disabled { pointer-events: none; opacity: 0.6; }
 
 
 .board-red {
-  background-color: red;
+    padding: 20px;
+    background-color: red;
 }
 
 .board-blue {
   background-color: blue;
+
 }
+
+.board_container{
+    padding: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+ button:hover {
+            background-color: #777;
+        }
+
+

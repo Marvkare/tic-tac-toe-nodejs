@@ -1,5 +1,8 @@
 //--------------------------    --------------- MULTIPLAYER -------------------//
 // Código para multijugador
+var colorBlue = "#3498db";
+var colorRed = "#e74c3c";
+var colorGray = "#95a5a6";
  function startMultiplayer() {
             // Ocultar el menú y mostrar el tablero multijugador
             document.getElementById('menu').style.display = 'none';
@@ -33,15 +36,21 @@
         // Asignar color cuando el servidor lo envía
         socket.on('assignColor', (color) => {
             myColor = color;
-            document.getElementById('info').textContent = `Eres el jugador ${color.toUpperCase()}`;
+            console.log("color asignado:", myColor);
         });
 
         // Actualizar el turno actual
         socket.on('turn', (currentTurn) => {
+            console.log(currentTurn);
             isMyTurn = (currentTurn === myColor);
                 
-                document.getElementById('board').style.setProperty('background-color', isMyTurn ? (myColor === 'red' ? '#ff0000' : '#0000ff') : '#808080');
-            
+                let boardContainer = document.getElementById('board_container');
+
+                boardContainer.style.setProperty('background-color', isMyTurn ? (myColor === 'red' ? colorRed : colorBlue) : '#808080');
+                boardContainer.style.setProperty('display', 'flex');
+                boardContainer.style.setProperty('justify-content', 'center');
+                boardContainer.style.setProperty('align-items', 'center');
+                boardContainer.style.setProperty('padding', '10%');
                 if (isMyTurn) {
                 document.getElementById('info').textContent = 'Es tu turno';
             } else {
@@ -139,14 +148,16 @@ const winningCombinations = [
         socket.on('youWon', (winner) => {
             alert("Ganaste");
             document.getElementById('info').textContent = `¡El jugador ${winner} ha ganado!`;
-            resetBoard(); // Resetear el tablero despues de ganar
+
             exitGame();
+            resetBoard(); // Resetear el tablero despues de ganar
         })
 
         socket.on('youLost', (lost) => {
             alert("Perdiste");
-            resetBoard();
+
             exitGame();
+            resetBoard();
         })
      
           // Informar la desconexion del usuario 

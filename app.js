@@ -7,7 +7,6 @@ const session = require('express-session');
 const SQLiteStore = require('connect-sqlite3')(session);
 const path = require('path');
 const sharedSession = require('socket.io-express-session');
-
 let games = {};  // Aquí almacenaremos las salas y el estado de cada partida
 const casillasSeleccionadas = {};
 
@@ -66,7 +65,10 @@ app.get('/login', (req, res) => {
     }
     res.sendFile(path.join(__dirname, 'public/login.html'));
 });
-
+app.get('/2', (req, res) => {
+    
+    res.sendFile(path.join(__dirname, 'public/index1.html'));
+});
 // Ruta de registro
 app.get('/register', (req, res) => {
     if (req.session.user) {
@@ -135,7 +137,8 @@ io.on('connection', (socket) => {
     // Asignar el jugador a una sala
     socket.on('joinGame', () => {
         let room = findAvailableRoom();
-        
+        console.log(room) 
+        console.log(games[room])
         socket.join(room);
 
         if (!games[room]) {
@@ -145,6 +148,7 @@ io.on('connection', (socket) => {
                 currentPlayer: 'red',// El jugador rojo empieza
                 movimientos: [],  
             };
+            
         }
         // Obtener el nombre de usuario de la sesión
         const username = socket.handshake.session.user ? socket.handshake.session.user.username : 'Unknown';

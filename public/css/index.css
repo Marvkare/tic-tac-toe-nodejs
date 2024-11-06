@@ -1,0 +1,166 @@
+/*HEADER */
+@font-face {
+    font-family: 'IM Fell Double Pica SC';
+    src: url('../font/IMFellDoublePicaSC-Regular.ttf') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f9f9;
+}
+
+.index-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; 
+    font-family: 'IM Fell Double Pica SC';
+    /*background: url('../backgrounds/title.jpg')  no-repeat center center fixed;
+    background-size: cover;*/
+}
+
+.contenedor {
+    padding-left: 3%;
+    padding-right: 3%;
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    /* Altura del contenedor */
+    
+    width: 100%; /* Ancho del contenedor */
+   
+}
+h1 {
+
+    margin: 0; /* Eliminar márgenes por defecto */
+    font-size: 2em; /* Tamaño de fuente adaptable */
+    text-align: center; /* Centrar texto */
+    
+}
+
+/* Media query para tabletas */
+@media (max-width: 800px) {
+    .index-header {
+        flex-direction: column-reverse; /* Cambia a fila en pantallas más grandes */
+        justify-content: space-around; /* Distribuye los elementos */
+        align-items: center;
+        font-family: 'IM Fell Double Pica SC';
+    }
+
+    .contenedor {
+        order: 1; /* Mantiene el h1 en la posición deseada */
+    }
+
+    .img1 {
+        display: none;
+    }
+
+    .img2 {
+        width: 50%;
+        order: 2; /* Imagen de abajo */
+    }
+
+
+    
+}
+
+/*HEADER END*/
+
+
+/*Boton play*/
+ 
+        #followButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: move 3s linear infinite alternate;
+        }
+        #followButton:hover {
+            background-color: #45a049;
+        }
+
+        @keyframes move {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(300px); } /* Cambia a la distancia deseada */
+        }
+
+.index-section-objetivo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+}
+.i-section-objetivo-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+}
+
+
+/*Atributo egreso*/
+.index-section-egreso{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.atributos-fila{
+    max-width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.atributos-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.index-section-mascota{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+.section-mascota-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 90%;
+}
+
+.section-mascota-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+}
+
+.section-mascota-text{
+    max-width: 70%;
+    padding-left: 2%;
+}
+
+/*carrusel paginas */
+.fc-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+

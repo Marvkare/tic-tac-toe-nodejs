@@ -3,36 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sitio sin menú</title>
-    <link href="./styles.css">
+    <title>Tecnm Sistemas Computacionales</title>
+    <link href="./css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/binari.css">
+    <link rel="stylesheet" href="./css/carrusel.css">
+    <link rel="stylesheet" href="./css/cards.css">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <header class="index-header">
+        <img src="./img/tecnm.png" alt="" width="20%" height="10%" class="img1">
+        <div class="contenedor">
+            <h1  >INGENIERIA EN SISTEMAS COMPUTACIONALES</h1>
+        </div>
+        <img src="./img/sistemasimg.png" alt="" width="20%" height="10%" class="img2">
+    </header>
+   
 
 <!-- Sección 1: Carrusel -->
-<section class="py-5">
-    <div class="container">
-        
-        <div id="semestersCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner" id="carouselContent">
-                <!-- Contenido dinámico se cargará aquí -->
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#semestersCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#semestersCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div>
-</section>
+<div class="carousel" id="carousel1"></div>
+
+
 
 <!-- Sección 2: Objetivo -->
-<section class="py-5 bg-light">
-    <div class="container">
+<section class="index-section-objetivo">
+    <div class="i-section-objetivo-container">
         <h2 class="text-center">Objetivo</h2>
         <p class="text-center">
             El objetivo principal del programa es formar profesionales capaces de enfrentar los retos del mundo laboral, 
@@ -41,193 +36,175 @@
         </p>
     </div>
 </section>
-
+<section style="display: none;">
+    <a href="login.html" id="followButton">Play game #</a>
+</section>
 <!-- Sección 3: Atributo Egreso - Desarrollo -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center">Atributos de Egreso</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card-container">
-                    <div class="card">
-                        <div class="card-front">
-                            <img src="img/imagen1.jpg" class="card-img-top" alt="Competencia 1">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Competencia 1</h5>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-body text-center">
-                                <p class="card-text">Descripción de la competencia y cómo se aplica en el entorno laboral.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card-container">
-                    <div class="card">
-                        <div class="card-front">
-                            <img src="img/imagen2.png" class="card-img-top" alt="Competencia 2">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Competencia 2</h5>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-body text-center">
-                                <p class="card-text">Descripción de la competencia y su impacto en la industria.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<section class="index-section-egreso">
+    <h2>Atributos de egreso</h2>
+<div class="atributos-container">
+    
+   <div class="atributos-fila">
+    <div class="card">
+        <div class="card-content">
+            <h2 class="card-title">NEW DESIGN</h2>
+            <h4 class="card-subtitle">Lorem ipsum dolor sit am, </h4>
+            <p class="card-description">consectetur adipiscing elit. Enim porttitor quam dolor...</p>
+        </div> 
     </div>
+    <div class="card">
+        <div class="card-content">
+            <h2 class="card-title">NEW DESIGN</h2>
+            <h4 class="card-subtitle">Lorem ipsum dolor sit am, </h4>
+            <p class="card-description">consectetur adipiscing elit. Enim porttitor quam dolor...</p>
+        </div> 
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <h2 class="card-title">NEW DESIGN</h2>
+            <h4 class="card-subtitle">Lorem ipsum dolor sit am, </h4>
+            <p class="card-description">consectetur adipiscing elit. Enim porttitor quam dolor...</p>
+        </div> 
+    </div>
+   </div> 
+
+   <!-- fila2 atributos de egreso -->
+
+   <div class="atributos-fila">
+    <div class="card">
+        <div class="card-content">
+            <h2 class="card-title">NEW DESIGN</h2>
+            <h4 class="card-subtitle">Lorem ipsum dolor sit am, </h4>
+            <p class="card-description">consectetur adipiscing elit. Enim porttitor quam dolor...</p>
+        </div> 
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <h2 class="card-title">NEW DESIGN</h2>
+            <h4 class="card-subtitle">Lorem ipsum dolor sit am, </h4>
+            <p class="card-description">consectetur adipiscing elit. Enim porttitor quam dolor...</p>
+        </div> 
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <h2 class="card-title">NEW DESIGN</h2>
+            <h4 class="card-subtitle">Lorem ipsum dolor sit am, </h4>
+            <p class="card-description">consectetur adipiscing elit. Enim porttitor quam dolor...</p>
+        </div> 
+    </div>
+   </div> 
+
+</div>
+    
+
+
+
+    
 </section>
 
 
 
 
 <!-- Sección 4: Mascota - Sensontle -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center">La Mascota: Sensontle</h2>
-        <p>
-            El Sensontle, una ave sagrada en la cultura tolteca, es la mascota de los ingenieros debido a su simbolismo de inteligencia, 
-            versatilidad y capacidad de adaptación. Según la leyenda, el Sensontle fue elegido por los dioses para representar la 
-            capacidad de los ingenieros de resolver problemas complejos con creatividad y precisión. 
-        </p>
-        <p>
-            Este mítico pájaro, que posee cuatrocientas voces, simboliza la variedad de conocimientos que un ingeniero adquiere a lo largo 
-            de su formación y cómo estos se aplican en múltiples campos, desde la tecnología hasta la innovación social.
-        </p>
+<section class="index-section-mascota">
+    <div class="section-mascota-container">
+        <h2 class="">La Mascota: Sensontle</h2>
+        <div class="section-mascota-content">
+            <img src="./img/sensontle.jpg" alt="" width="20%" height="20%">
+            <div class="section-mascota-text">
+                <p>
+                    El Sensontle, una ave sagrada en la cultura tolteca, es la mascota de los ingenieros debido a su simbolismo de inteligencia, 
+                    versatilidad y capacidad de adaptación. Según la leyenda, el Sensontle fue elegido por los dioses para representar la 
+                    capacidad de los ingenieros de resolver problemas complejos con creatividad y precisión. 
+                </p>
+                <p>
+                    Este mítico pájaro, que posee cuatrocientas voces, simboliza la variedad de conocimientos que un ingeniero adquiere a lo largo 
+                    de su formación y cómo estos se aplican en múltiples campos, desde la tecnología hasta la innovación social.
+                </p>
+            </div>
+            
+
+        </div>
+       
     </div>
 </section>
-
-
-<!-- Página Programación -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center">Página de Programación</h2>
-        <!-- Carrusel -->
-        <div id="programmingCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <!-- Carrusel de Programación con 5 imágenes -->
-                <div class="carousel-item active">
-                    <img src="img/prog1.jpg" class="d-block w-100" alt="Programación 1">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/prog2.jpg" class="d-block w-100" alt="Programación 2">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/prog3.jpg" class="d-block w-100" alt="Programación 3">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/prog4.jpg" class="d-block w-100" alt="Programación 4">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/prog5.jpg" class="d-block w-100" alt="Programación 5">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#programmingCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#programmingCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <!-- Objetivo empresarial -->
-        <h3 class="text-center mt-5">Objetivo Empresarial</h3>
-        <p class="text-center">
-            El objetivo de la página de programación es ofrecer herramientas y recursos que promuevan el desarrollo de soluciones tecnológicas, 
-            desde la programación básica hasta aplicaciones avanzadas en el sector empresarial.
-        </p>
-        <!-- Fichas de desarrollo -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Desarrollo 1</h5>
-                        <p class="card-text">Descripción del desarrollo en el entorno de la programación.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Desarrollo 2</h5>
-                        <p class="card-text">Descripción del impacto en la industria y cómo las tecnologías emergentes son aplicadas.</p>
-                    </div>
-                </div>
-            </div>
+<section class="section-programacion">
+    <h1>Programacion</h1>
+    <div class="carousel" id="carousel2"></div>
+    <div class="section-programacion-container">
+        <h1>Objetivo</h1>
+        <div >
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+                Accusamus delectus error magni quis eum, fugiat perferendis.
+                 Quas, rerum quae? Ipsum minus doloribus sapiente mollitia voluptatum 
+                 necessitatibus, magni sed illum tempora.</p>
         </div>
     </div>
-</section>
+    <div>
+        <h1>Desarrollo</h1>
+        <div>
+                <div class="fc-card-container">
+                    <div class="fc-card" id="fc-card">
+                        <div class="fc-card-face fc-front">
+                            <div class="fc-message">Click para girar</div>
+                            Front
 
-<!-- Página Redes -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center">Página de Redes</h2>
-        <!-- Carrusel de imágenes de redes -->
-        <div id="networkingCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="img/redes1.jpg" class="d-block w-100" alt="Redes 1">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/redes2.jpg" class="d-block w-100" alt="Redes 2">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/redes3.jpg" class="d-block w-100" alt="Redes 3">
-                </div>
-                <div class="carousel-item">
-                    <img src="img/redes4.jpg" class="d-block w-100" alt="Redes 4">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#networkingCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#networkingCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <!-- Objetivo empresarial -->
-        <h3 class="text-center mt-5">Objetivo Empresarial</h3>
-        <p class="text-center">
-            La página de redes tiene como objetivo desarrollar soluciones integrales de comunicación y seguridad en redes, 
-            garantizando la optimización del rendimiento y la calidad del servicio.
-        </p>
-        <!-- Fichas de desarrollo en redes -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Desarrollo 1</h5>
-                        <p class="card-text">Implementación de tecnologías de redes seguras y escalables.</p>
+                        </div>
+                        <div class="fc-card-face fc-back">
+                            <div class="fc-message">Click para girar</div>
+                            Back
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Desarrollo 2</h5>
-                        <p class="card-text">Impacto de las redes avanzadas en la interconectividad global.</p>
+                    <div class="fc-card" id="fc-card">
+                        <div class="fc-card-face fc-front">
+                            <div class="fc-message">Click para girar</div>
+                            Front
+
+                        </div>
+                        <div class="fc-card-face fc-back">
+                            <div class="fc-message">Click para girar</div>
+                            Back
+                        </div>
+                    </div>
+                    <div class="fc-card" id="fc-card">
+                        <div class="fc-card-face fc-front">
+                            <div class="fc-message">Click para girar</div>
+                            Front
+
+                        </div>
+                        <div class="fc-card-face fc-back">
+                            <div class="fc-message">Click para girar</div>
+                            Back
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    
+
+    
 </section>
+
+<footer>
+    <h1>footer</h1>
+</footer>
 
 
 <!-- Script Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="data.js"></script>
 <script src="script.js"></script>
+
+    <script src="./js/index.js"></script> 
+<script src="./js/binari.js"></script>
+<script src="./js/cards.js"></script>
+<!--Script particulas       -->
+<script src="./backgrounds/particles.js-master/particles.js"></script>
+<script src="./backgrounds/particles.js-master/demo/app.js"></script>
+<script src="./backgrounds/particles.js-master/demo/js/lib/stats.js"></script>
+<script src="./backgrounds/particles.js-master/particles.min.js"></script>
+
 
 </body>
 </html>
