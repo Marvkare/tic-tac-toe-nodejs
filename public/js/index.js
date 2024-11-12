@@ -9,24 +9,3 @@
         button.style.left = mouseX + 'px';
     });
 
-
- import { loadFull } from "@tsparticles/engine";
-
-    const particlesInit = async (main) => {
-      await loadFull(main);
-    };
-
-    const particlesLoaded = (container) => {
-      console.log("Particles container loaded", container);
-    };
-
-    // Aquí puedes configurar las opciones de los partículas
-    const particlesOptions = {
-      // Opciones de configuración
-    };
-
-    // Inicializar los partículas
-    particlesJS("particles-js", particlesOptions, particlesInit, particlesLoaded);
-
-
-    

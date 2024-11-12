@@ -9,7 +9,6 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: #f7f9f9;
 }
 
 .index-header {
@@ -142,6 +141,7 @@ h1 {
     justify-content: center;
     flex-direction: column;
     width: 90%;
+    background: rgb( , green, blue);
 }
 
 .section-mascota-content{
@@ -164,3 +164,20 @@ h1 {
     justify-content: space-around;
 }
 
+.section-programacion-objetivo{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.section-programacion-objetivo>*{
+    max-width: 50%;
+}
+
+#particles-js{
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index: -1;
+}

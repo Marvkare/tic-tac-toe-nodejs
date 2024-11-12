@@ -13,7 +13,7 @@ const data = {
       title: "3er Semestre",
       comment: "Comentario sobre el 3er semestre",
       images: [
-        { src: "img/imagen1.jpg", alt: "3ro Semestre 1", width: "300", height: "200" },
+        { src: "img/programacion.jpg", alt: "3ro Semestre 1", width: "300", height: "200" },
         { src: "img/imagen2.png", alt: "3ro Semestre 2", width: "300", height: "200" },
         { src: "img/imagen3.png", alt: "3ro Semestre 3", width: "300", height: "200" }
       ]

@@ -14,7 +14,7 @@
 
 .carousel-image {
     min-width: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .carousel-controls {
@@ -45,3 +45,5 @@
     padding: 5px 10px;
     border-radius: 5px;
 }
+
+

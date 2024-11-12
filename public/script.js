@@ -11,9 +11,9 @@ const carouselsData = [
     {
         id: 'carousel2',
         images: [
-            { src: 'img/imagen4.jpg', alt: 'Imagen 4' },
-            { src: 'img/imagen5.png', alt: 'Imagen 5' },
-            { src: 'img/imagen6.png', alt: 'Imagen 6' },
+            { src: 'img/programacion.jpg', alt: 'Imagen 4' },
+            { src: 'img/kgisado.jpg', alt: 'Imagen 5' },
+            { src: 'img/graficacion_axol.gif', alt: 'Imagen 6' },
         ],
     },
 ];

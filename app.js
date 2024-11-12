@@ -6,9 +6,19 @@ const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const SQLiteStore = require('connect-sqlite3')(session);
 const path = require('path');
+const fs = require('fs');
 const sharedSession = require('socket.io-express-session');
+
 let games = {};  // Aquí almacenaremos las salas y el estado de cada partida
+/* Configuración para SSL */
+/*
 const casillasSeleccionadas = {};
+const https = require('https');
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/tu_dominio.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/tu_dominio.com/fullchain.pem')
+};
+*/
 
 const app = express();
 const server = http.createServer(app);
