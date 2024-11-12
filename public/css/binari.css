@@ -1,0 +1,13 @@
+ 
+        .binary {
+            font-family: 'Courier New', Courier, monospace;
+            position: absolute;
+            opacity: 1;
+            transition: opacity 1s ease-in-out, color 0.3s ease;
+            z-index: -1;
+            font-size: 30px;
+            color: #1C1C50;
+        }
+        .binary:hover {
+            color: #000; /* Color al pasar el cursor */
+        }

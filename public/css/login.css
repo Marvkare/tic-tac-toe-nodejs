@@ -1,0 +1,132 @@
+
+
+.login-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    background: red;
+    max-width: 90%; /* Ajusta según sea necesario */
+    height: 500px; /* Altura fija para mantener proporciones */
+    /*overflow: hidden;*/ 
+}
+.login-form{
+    display: flex;
+}
+
+.imgderecha{
+    width: 40%;
+}
+.imgizquierda{
+    width: 40%;
+}
+
+.x-vs-o{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.login-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+.login-input-container>*{
+    margin: 10px 0;
+}
+
+.login-form-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.login-form-container>*{
+    margin: 10px 0;
+    padding-left: 10px;
+}
+
+/*inputs css*/
+input {
+            padding: 15px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333; /* Fondo del input */
+            color: #fff; /* Color del texto */
+            transition: box-shadow 0.3s ease; /* Transición suave */
+        }
+
+        /* Efecto neón en hover y focus */
+        input:hover, input:focus {
+            outline: none; /* Sin contorno al enfocar */
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5), /* Sombra interna */
+                        0 0 10px rgba(255, 0, 0, 0.7), /* Sombra media */
+                        0 0 20px rgba(255, 0, 0, 1), /* Sombra fuerte */
+                        0 0 30px rgba(255, 0, 0, 1); /* Sombra externa */
+        }
+
+        input::placeholder {
+            color: rgba(255, 0, 0, 0.7); /* Color del placeholder */
+            font-style: italic; /* Estilo en cursiva */
+        }
+/*input css ends*/
+.container{
+    display:flex;
+    justify-content: center ;
+    flex-direction: column;
+}
+.container>a{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background: #333;
+    border-radius: 5px;
+    color:red;
+   text-decoration: none; 
+
+    
+}
+.container>a:hover{
+    
+    outline: none; /* Sin contorno al enfocar */
+                    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5), /* Sombra interna */
+                                0 0 10px rgba(255, 0, 0, 0.7), /* Sombra media */
+                                0 0 20px rgba(255, 0, 0, 1), /* Sombra fuerte */
+                                0 0 30px rgba(255, 0, 0, 1); /* Sombra externa */
+}
+button{width: 100%;}
+button:hover{
+    color:red;
+    background-color: #333;
+    outline: none; /* Sin contorno al enfocar */
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5), /* Sombra interna */
+                0 0 10px rgba(255, 0, 0, 0.7), /* Sombra media */
+                0 0 20px rgba(255, 0, 0, 1), /* Sombra fuerte */
+                0 0 30px rgba(255, 0, 0, 1); /* Sombra externa */
+}
+/*boton css ends*/
+.blinking-text {
+            font-size: 24px;
+            animation: color-change 2s infinite; /* Animación de cambio de color */
+        }
+
+        @keyframes color-change {
+            0% {
+                color: #ff0000; /* Rojo */
+            }
+            25% {
+                color: #f9f9f9; /* Naranja */
+            }
+            50% {
+                color: #e75b5b; /* Amarillo */
+            }
+            75% {
+                color: #ffffff; /* Verde */
+            }
+            100% {
+                color: #ff0000; /* Regresa a Rojo */
+            }
+        }

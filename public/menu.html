@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Juego</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="menu">
+        <h1>Bienvenido, <span id="username"></span></h1>
+        <button onclick="startSinglePlayer()">Jugar Contra Máquina</button>
+        <button onclick="startMultiplayer()">Jugar Contra Otro Jugador</button>
+        <div id="ranking">
+            <h2>Ranking</h2>
+            <ul id="ranking-list"></ul>
+        </div>
+        
+        <button onclick="logout()">Cerrar Sesión</button>
+    </div>
+
+    <div id="game-board" style="display:none;">
+        <h2>Tic-Tac-Toe: You vs Machine</h2>
+        <div class="board">
+            <div class="cell" id="cell-0" onclick="playerMove(0)"></div>
+            <div class="cell" id="cell-1" onclick="playerMove(1)"></div>
+            <div class="cell" id="cell-2" onclick="playerMove(2)"></div>
+            <div class="cell" id="cell-3" onclick="playerMove(3)"></div>
+            <div class="cell" id="cell-4" onclick="playerMove(4)"></div>
+            <div class="cell" id="cell-5" onclick="playerMove(5)"></div>
+            <div class="cell" id="cell-6" onclick="playerMove(6)"></div>
+            <div class="cell" id="cell-7" onclick="playerMove(7)"></div>
+            <div class="cell" id="cell-8" onclick="playerMove(8)"></div>
+        </div>
+    </div>
+
+    <!-- Multijugador -->
+    <div id="multiplayer-board" style="display:none;">
+        <h1>Juego de Turnos Multijugador</h1>
+      <div  id="board_container" >
+        <div    class="board" id="board" >
+        <div class="mp-cell" id="mp-cell-0" onclick="makeMove(0)"></div>
+        <div class="mp-cell" id="mp-cell-1" onclick="makeMove(1)"></div>
+        <div class="mp-cell" id="mp-cell-2" onclick="makeMove(2)"></div>
+        <div class="mp-cell" id="mp-cell-3" onclick="makeMove(3)"></div>
+        <div class="mp-cell" id="mp-cell-4" onclick="makeMove(4)"></div>
+        <div class="mp-cell" id="mp-cell-5" onclick="makeMove(5)"></div>
+        <div class="mp-cell" id="mp-cell-6" onclick="makeMove(6)"></div>
+        <div class="mp-cell" id="mp-cell-7" onclick="makeMove(7)"></div>
+        <div class="mp-cell" id="mp-cell-8" onclick="makeMove(8)"></div>
+        </div>
+    </div> 
+        <div id="jugadoreslist"></div>
+           <button onclick="exitGame()">Avandonar el juego</button>
+        <div id="info">Infomacion</div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./menu.js"></script>
+    <script src="./js/multiplayer.js"></script>
+    <script src="./js/singleplayer.js"></script>
+</body>
+</html>
