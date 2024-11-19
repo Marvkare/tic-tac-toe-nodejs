@@ -19,6 +19,7 @@ var colorGray = "#95a5a6";
             socket.emit('exitroom');
             document.getElementById('menu').style.display = 'block';
             document.getElementById('multiplayer-board').style.display = 'none';
+            console.log("Se desconecto el jugador");
             loadRanking(); 
         }
 
