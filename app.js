@@ -7,8 +7,12 @@ const session = require('express-session');
 const SQLiteStore = require('connect-sqlite3')(session);
 const path = require('path');
 const fs = require('fs');
+require('./snake/snakeapp.js');
 const sharedSession = require('socket.io-express-session');
+const { randomUUID, randomInt } = require('crypto');
 
+
+const { router: singlePlayerRoutes, handleSocketConnection } = require('./singleplayer-app'); // Importar el módulo de singleplayer
 let games = {};  // Aquí almacenaremos las salas y el estado de cada partida
 /* Configuración para SSL */
 /*
@@ -23,6 +27,10 @@ const options = {
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+handleSocketConnection(io);
+
+console.log(io)
+
 
 // Configurar la base de datos SQLite
 const db = new sqlite3.Database('./database/game.db');
@@ -67,6 +75,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.use(sharedSession(sessionMiddleware, {
     autoSave: true
 }));
+
+
+// Usar las rutas de singleplayer
+app.use(singlePlayerRoutes);
 
 // Ruta de inicio de sesión
 app.get('/login', (req, res) => {
@@ -138,6 +150,15 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.get('/ranking', (req, res) => {
+    db.all('SELECT u.username, r.wins, r.losses FROM rankings r JOIN users u ON r.userId = u.id ORDER BY r.wins DESC', (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error al obtener el ranking.' });
+        }
+        res.json(rows); // Enviar el ranking como respuesta
+    });
+});
+
 // Lógica de WebSocket para el juego
 let waitingPlayer = null;
 
@@ -148,8 +169,8 @@ io.on('connection', (socket) => {
     socket.on('joinGame', () => {
         let room = findAvailableRoom();
         console.log(room) 
-        console.log(games[room])
         socket.join(room);
+        socket.room = room;
 
         if (!games[room]) {
             games[room] = {
@@ -158,7 +179,8 @@ io.on('connection', (socket) => {
                 currentPlayer: 'red',// El jugador rojo empieza
                 movimientos: [],  
             };
-            
+           console.log("Numero de salas:"); 
+           console.log(Object.keys(games).length);
         }
         // Obtener el nombre de usuario de la sesión
         const username = socket.handshake.session.user ? socket.handshake.session.user.username : 'Unknown';
@@ -185,70 +207,50 @@ io.on('connection', (socket) => {
         
             
         // Manejar la desconexión del jugador
-        socket.on('exitroom', () => {
-            console.log('Un jugador se ha desconectado:-', socket.id);
-            games[room].movimientos = [];
-            games[room].board = Array(9).fill(null);
-            console.log(games[room].movimientos);
-            io.to(room).emit('updateBoard', games[room].movimientos);
-            // Buscar en qué sala estaba el jugador desconectado
-            for (let room in games) {
-                
-                if (games[room].players.red && games[room].players.red.id === socket.id) {
-                    // El jugador rojo se desconectó
-                    io.to(room).emit('playerDisconnected', { color: 'red', name: games[room].players.red.name });
-                    delete games[room].players.red;
-                } else if (games[room].players.blue && games[room].players.blue.id === socket.id) {
-                    // El jugador azul se desconectó
-                    io.to(room).emit('playerDisconnected', { color: 'blue', name: games[room].players.blue.name });
-                    delete games[room].players.blue;
-                }
-
-                // Si ambos jugadores están desconectados, eliminar la sala
-                if (!games[room].players.red && !games[room].players.blue) {
-                    
-                    delete games[room];
-                    console.log("Se elimino la sala")
-                }
-            }
+           // Lógica para manejar la desconexión
+        socket.on('disconnect', () => {
+            handlePlayerExit(socket.id, room);
         });
-
-        socket.on('gameWon', (winner) => {
-        const winnerColor = winner === 'X' ? 'rojo' : 'azul';
-        const currentRoom = games[room];
         
-        // Identifica el jugador ganador y perdedor
-        let ganadorSocketId;
-        let perdedorSocketId;
+        // Manejar la salida manual
+        socket.on('exitroom', () => {
 
-        if (currentRoom.players.red && winnerColor === 'rojo') {
-            ganadorSocketId = currentRoom.players.red.id;
-            perdedorSocketId = currentRoom.players.blue.id;
-        } else if (currentRoom.players.blue && winnerColor === 'azul') {
-            ganadorSocketId = currentRoom.players.blue.id;
-            perdedorSocketId = currentRoom.players.red.id;
-        }
-
-        // Enviar mensaje al ganador
-        if (ganadorSocketId) {
-            io.to(ganadorSocketId).emit('youWon', {
-                message: '¡Felicidades! Ganaste la partida',
-                winnerColor: winnerColor
-            });
-        }
-
-        // Enviar mensaje al perdedor
-        if (perdedorSocketId) {
-            io.to(perdedorSocketId).emit('youLost', {
-                message: 'Lo siento, perdiste la partida',
-                winnerColor: winnerColor
-            });
-        }
+            console.log("Se desconecto el jugador"+ socket.id+room);
+            handlePlayerExit(socket.id, room);
+        });
     });
+
+    function handlePlayerExit(playerId, room) {
+        if (games[room]) {
+            // Identificar qué jugador se desconectó
+            if (games[room].players.red && games[room].players.red.id === playerId) {
+                delete games[room].players.red;
+                io.to(room).emit('playerDisconnected', { color: 'red', name: games[room].players.red ? games[room].players.red.name : 'Unknown' });
+            } else if (games[room].players.blue && games[room].players.blue.id === playerId) {
+                delete games[room].players.blue;
+                io.to(room).emit('playerDisconnected', { color: 'blue', name: games[room].players.blue ? games[room].players.blue.name : 'Unknown' });
+            }
+
+            // Verificar si ambos jugadores están desconectados
+            if (!games[room].players.red && !games[room].players.blue) {
+                delete games[room]; // Eliminar la sala
+                console.log('Se eliminó la sala:', room);
+            }
+        }
+    } 
+
+     
  
         // Manejar el movimiento del jugador
         socket.on('playerMove', (index) => {
-           
+            const room = socket.room; // Usar la sala almacenada en el socket
+
+            if (!games[room]) {
+                console.log('Sala no encontrada.');
+                return; // Salir si la sala no existe
+            }
+
+          
             if (games[room].players[games[room].currentPlayer].id === socket.id) {
                 games[room].board[index] = games[room].currentPlayer;  // Actualizar el tablero
                 const jugador = games[room].currentPlayer;
@@ -271,14 +273,61 @@ io.on('connection', (socket) => {
                     });
                     //Actualizar el tablero
                     console.log(games[room].movimientos);
-                    
+                     // Verificar si hay un ganador
+                    const winnerColor = checkForWinner(games[room].board);
+                    if (winnerColor) {
+                        const winnerName = games[room].players[winnerColor].name; // Obtener el nombre del ganador
+                        const yoGane = games[room].players[winnerColor].id === socket.id; // Verificar si el jugador actual ganó
+                        const loserColor = winnerColor === 'red' ? 'blue' : 'red';
+                        const loserName = games[room].players[loserColor].name;    
+                        console.log({ winner: winnerName, yoGane: yoGane });
+                        io.to(room).emit('gameOver', { winner: winnerName, yoGane: yoGane }); // Notificar al ganador
+                        
+                                            // Obtener el userId del ganador
+                        db.get('SELECT id FROM users WHERE username = ?', [winnerName], (err, winner) => {
+                            if (err) {
+                                console.error('Error al obtener el ID del ganador:', err);
+                                return;
+                            }
+
+                    if (winner) {
+                        // Actualizar el ranking del ganador
+                        db.run('UPDATE rankings SET wins = wins + 1 WHERE userId = ?', [winner.id], function(err) {
+                            if (err) {
+                                console.error('Error al actualizar el ranking del ganador:', err);
+                            }
+                        });
+                    }
+
+                    // Obtener el userId del perdedor
+                    db.get('SELECT id FROM users WHERE username = ?', [loserName], (err, loser) => {
+                        if (err) {
+                            console.error('Error al obtener el ID del perdedor:', err);
+                            return;
+                        }
+
+                    if (loser) {
+                        // Actualizar el ranking del perdedor
+                        db.run('UPDATE rankings SET losses = losses + 1 WHERE userId = ?', [loser.id], function(err) {
+                            if (err) {
+                                console.error('Error al actualizar el ranking del perdedor:', err);
+                            }
+                        });
+                    }
+                    });
+                    });
+                        io.emit('exitroom');
+                        return;
+                    }
+
+                    // Verificar si hay un empate
+                    if (checkForDraw(games[room].board)) {
+                        io.to(room).emit('gameOver', { winner: null, yoGane: false }); // Notificar el empate
+                        io.emit('exitroom');
+                        return;
+                    }   
                 
-                /*Verificar si hay un ganador
-                const winner = checkForWinner(games[room].board);
-                if (winner) {
-                    io.to(room).emit('gameOver', winner);
-                    return;
-                }*/
+               
                 // Cambiar de turno
                 games[room].currentPlayer = games[room].currentPlayer === 'red' ? 'blue' : 'red';
                 io.to(room).emit('turn', games[room].currentPlayer);  // Informar del nuevo turno
@@ -289,18 +338,25 @@ io.on('connection', (socket) => {
     
         });
 
+        // Función para verificar empate
+        function checkForDraw(board) {
+            // Verifica si el tablero está lleno y no hay un ganador
+            return board.every(cell => cell !== null);
+        }
        
     });
-});
+
 
 // Encontrar una sala con espacio para un nuevo jugador o crear una nueva
 function findAvailableRoom() {
     for (let room in games) {
         if (Object.keys(games[room].players).length < 2) {
+            console.log("Se encontro una sala");
             return room;
         }
     }
-    return `game-${Object.keys(games).length + 1}`;  // Crear nueva sala
+    console.log("Se creo una nueva sala");
+    return `game-${new Date().getTime()}`;  // Crear nueva sala
 }
 
 // Iniciar el servidor
@@ -308,3 +364,25 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+
+
+function checkForWinner(board) {
+    const winningCombinations = [
+        [0, 1, 2], // Fila 1
+        [3, 4, 5], // Fila 2
+        [6, 7, 8], // Fila 3
+        [0, 3, 6], // Columna 1
+        [1, 4, 7], // Columna 2
+        [2, 5, 8], // Columna 3
+        [0, 4, 8], // Diagonal 1
+        [2, 4, 6]  // Diagonal 2
+    ];
+
+    for (const combination of winningCombinations) {
+        const [a, b, c] = combination;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            return board[a]; // Retorna el color del ganador
+        }
+    }
+    return null; // No hay ganador
+}

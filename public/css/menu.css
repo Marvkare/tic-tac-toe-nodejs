@@ -1,0 +1,74 @@
+/* Estilo de la Modal */
+.modal {
+    display: none; /* Oculta la modal por defecto */
+    position: fixed; /* Mantiene la modal en su lugar */
+    z-index: 1; /* Asegura que esté delante */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Agregar scroll si es necesario */
+    background-color: rgb(0,0,0); /* Color de fondo */
+    background-color: rgba(0,0,0,0.4); /* Fondo con opacidad */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% desde la parte superior y centrado */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Ancho de la modal */
+    color: black;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#ranking {
+    background-color: #222; /* Fondo de la sección del ranking */
+    padding: 20px;
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+#ranking-container {
+    max-height: 300px; /* Altura máxima del contenedor */
+    overflow-y: auto; /* Habilitar scroll vertical */
+    border: 1px solid #444; /* Borde del contenedor */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+table {
+    width: 100%; /* Ancho completo para la tabla */
+    border-collapse: collapse; /* Eliminar espacios entre celdas */
+}
+
+th, td {
+    padding: 10px; /* Espaciado interno */
+    text-align: left; /* Alinear texto a la izquierda */
+    border: 1px solid #444; /* Borde de las celdas */
+}
+
+th {
+    background-color: #ff4c4c; /* Color de fondo para los encabezados */
+    color: white; /* Color de texto blanco para encabezados */
+}
+
+td {
+    background-color: #333; /* Color de fondo para las celdas */
+    color: white; /* Color de texto blanco para celdas */
+}
+
+tr:hover {
+    background-color: #555; /* Color de fondo al pasar el ratón sobre la fila */
+}

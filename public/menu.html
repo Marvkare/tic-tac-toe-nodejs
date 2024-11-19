@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú de Juego</title>
+    <link rel="stylesheet" href="./css/menu.css">
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -11,27 +12,47 @@
         <h1>Bienvenido, <span id="username"></span></h1>
         <button onclick="startSinglePlayer()">Jugar Contra Máquina</button>
         <button onclick="startMultiplayer()">Jugar Contra Otro Jugador</button>
+        <!--<button onclick="snakeGame()">Snake Game</button> -->
+     
         <div id="ranking">
-            <h2>Ranking</h2>
-            <ul id="ranking-list"></ul>
-        </div>
+    <h2>Ranking</h2>
+    <div id="ranking-container">
+        <table id="ranking-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Victorias</th>
+                    <th>Derrotas</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-list"></tbody>
+        </table>
+    </div>
+</div>
+
+       
         
         <button onclick="logout()">Cerrar Sesión</button>
     </div>
 
-    <div id="game-board" style="display:none;">
+    <div id="singleplayer-board" style="display:none;">
         <h2>Tic-Tac-Toe: You vs Machine</h2>
-        <div class="board">
-            <div class="cell" id="cell-0" onclick="playerMove(0)"></div>
-            <div class="cell" id="cell-1" onclick="playerMove(1)"></div>
-            <div class="cell" id="cell-2" onclick="playerMove(2)"></div>
-            <div class="cell" id="cell-3" onclick="playerMove(3)"></div>
-            <div class="cell" id="cell-4" onclick="playerMove(4)"></div>
-            <div class="cell" id="cell-5" onclick="playerMove(5)"></div>
-            <div class="cell" id="cell-6" onclick="playerMove(6)"></div>
-            <div class="cell" id="cell-7" onclick="playerMove(7)"></div>
-            <div class="cell" id="cell-8" onclick="playerMove(8)"></div>
+        <div id="board_container">
+            <div class="board" id="board">
+                <div class="cell" id="cell-0" onclick="sp_playerMove(0)"></div>
+                <div class="cell" id="cell-1" onclick="sp_playerMove(1)"></div>
+                <div class="cell" id="cell-2" onclick="sp_playerMove(2)"></div>
+                <div class="cell" id="cell-3" onclick="sp_playerMove(3)"></div>
+                <div class="cell" id="cell-4" onclick="sp_playerMove(4)"></div>
+                <div class="cell" id="cell-5" onclick="sp_playerMove(5)"></div>
+                <div class="cell" id="cell-6" onclick="sp_playerMove(6)"></div>
+                <div class="cell" id="cell-7" onclick="sp_playerMove(7)"></div>
+                <div class="cell" id="cell-8" onclick="sp_playerMove(8)"></div>
+            </div>
         </div>
+        <div id="info-singleplayer"></div>
+           <button onclick="exitGameMachine()">Avandonar el juego</button>
+        <div id="info">Infomacion</div>
     </div>
 
     <!-- Multijugador -->
@@ -54,10 +75,18 @@
            <button onclick="exitGame()">Avandonar el juego</button>
         <div id="info">Infomacion</div>
     </div>
-
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- Modal -->
+<div id="gameOverModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalMessage"></h2>
+    </div>
+</div>
+    <script  src="/socket.io/socket.io.js"></script>
     <script src="./menu.js"></script>
-    <script src="./js/multiplayer.js"></script>
-    <script src="./js/singleplayer.js"></script>
+    <script  src="./js/multiplayer.js"></script>
+    <script  src="./js/singleplayer.js"></script>
+    <script  src="./js/menu.js"></script>
+    <script src="./js/snake.js"></script>
 </body>
 </html>

@@ -1,5 +1,8 @@
 
         //codigos de colores para los tableron en los tres turnos
+
+
+
         //Turno A
         var color1 ='417bf0'
         //Turno B
@@ -13,71 +16,118 @@
         fetch('/user-info')
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                localStorage.setItem('username', data.username); 
                 document.getElementById('username').textContent = data.username;
                 loadRanking();
             })
             .catch(err => console.error('Error fetching user data:', err));
 
-        function startSinglePlayer() {
-            document.getElementById('menu').style.display = 'none';
-            document.getElementById('game-board').style.display = 'block';
-        }
+       
 
        
 
-        function loadRanking() {
-            // Obtener el ranking del servidor y mostrarlo
-        }
+       
+
+        // Llamar a loadRanking cuando se cargue la página
+        document.addEventListener('DOMContentLoaded', loadRanking); 
+
 
         function logout() {
             window.location.href = '/logout';
         }
+            // Conectar a Socket.io
+                // Variables para el juego
+        let currentRoomId;
 
-        // Código para el modo jugador contra máquina
-        let board = Array(9).fill(null);
-        let currentPlayer = 'X';
-
-        function playerMove(index) {
-            if (!board[index]) {
-                board[index] = currentPlayer;
-                document.getElementById(`cell-${index}`).textContent = currentPlayer;
-                if (checkWinner(currentPlayer)) {
-                    setTimeout(() => alert('You win!'), 100);
-                    resetGame();
-                } else if (board.includes(null)) {
-                    setTimeout(machineMove, 500);
-                } else {
-                    setTimeout(() => alert('It\'s a draw!'), 100);
-                    resetGame();
+        // Función para iniciar el juego contra la máquina
+        
+       
+/*
+         function startSinglePlayer() {
+                    fetch('/start-singleplayer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include' // Asegúrate de incluir las cookies de sesión
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al iniciar la partida');
                 }
-            }
-        }
-
-        function machineMove() {
-            let emptyCells = board.map((val, idx) => val === null ? idx : null).filter(val => val !== null);
-            let randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            board[randomCell] = 'O';
-            document.getElementById(`cell-${randomCell}`).textContent = 'O';
-
-            if (checkWinner('O')) {
-                setTimeout(() => alert('Machine wins!'), 100);
-                resetGame();
-            }
-        }
-
-        function checkWinner(player) {
-            const winningCombinations = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],  // Rows
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],  // Columns
-                [0, 4, 8], [2, 4, 6]              // Diagonals
-            ];
-            return winningCombinations.some(combination => {
-                return combination.every(index => board[index] === player);
+                return response.json();
+            })
+            .then(data => {
+                // Aquí obtienes el roomId del servidor
+                const roomId = data.roomId;
+                currentRoomId = roomId; // Guardar el roomId para usarlo en movimientos
+                document.getElementById('menu').style.display = 'none';
+                document.getElementById('singleplayer-board').style.display = 'block';
+                console.log("Se creo una nueva sala sp");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('No se pudo iniciar la partida. Intenta de nuevo.');
             });
         }
 
+*/
+        function startSinglePlayer() {
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('singleplayer-board').style.display = 'block';
+            socket.emit('startSinglePlayer');    
+        }
+
+        socket.on('singlePlayerRoom', (roomId) => {
+            currentRoomId = roomId;
+            console.log("Se creo una nueva sala sp");
+        })
+      // Manejar el movimiento del jugador
+        function sp_playerMove(index) {
+            console.log("se movio el jugador");
+            console.log(currentRoomId)
+            socket.emit('playerMoveSP', { roomId: currentRoomId, index });
+        } 
+
+
+        // Escuchar actualizaciones del tablero
+        socket.on('updateBoardSP', (board) => {
+            console.log("se actualizo el tablero");
+            updateBoardSP(board);
+        });
+
+        // Escuchar el evento de fin de juego
+        socket.on('gameOverSP', (data) => {
+            if (data.winner) {
+                alert(`${data.winner} wins!`);
+            } else if (data.draw) {
+                alert('It\'s a draw!');
+            }
+            resetGame();
+        });
+
+        // Función para actualizar el tablero en el front-end
+        function updateBoardSP(board) {
+            console.log(board)
+            board.forEach((cell, index) => {
+                document.getElementById(`cell-${index}`).textContent = cell;
+            });
+        }
+
+        // Función para salir del juego
+        function exitGameMachine() {
+            socket.emit('exitSinglePlayer', currentRoomId);
+            document.getElementById('menu').style.display = 'block';
+            document.getElementById('singleplayer-board').style.display = 'none';
+            console.log("Se desconecto el jugador");
+            loadRanking();
+            resetGame();
+        }
+
+        // Función para resetear el juego
         function resetGame() {
+            currentRoomId = null;
             board = Array(9).fill(null);
             document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+            socket.emit('startSinglePlayer');
         }

@@ -19,7 +19,7 @@ var colorGray = "#95a5a6";
             socket.emit('exitroom');
             document.getElementById('menu').style.display = 'block';
             document.getElementById('multiplayer-board').style.display = 'none';
-            
+            loadRanking(); 
         }
 
        
@@ -74,44 +74,12 @@ var colorGray = "#95a5a6";
                 cell.classList.remove('disabled');  // Eliminar la clase 'disabled' si está presente
             });
         }
-const winningCombinations = [
-            [0, 1, 2],  // Fila 1
-            [3, 4, 5],  // Fila 2
-            [6, 7, 8],  // Fila 3
-            [0, 3, 6],  // Columna 1
-            [1, 4, 7],  // Columna 2
-            [2, 5, 8],  // Columna 3
-            [0, 4, 8],  // Diagonal principal
-            [2, 4, 6]   // Diagonal secundaria
-            ];
+
 
             
-        function checkWinnerMP () {
-            let cells = document.querySelectorAll('.mp-cell');
-            console.log("checkWinner");
+        
 
-            for (let i = 0; i < winningCombinations.length; i++) {
-                let [a, b, c] = winningCombinations[i];
-
-                // Obtenemos el contenido del span dentro de las celdas
-                let spanA = cells[a].querySelector('span')?.textContent || '';
-                let spanB = cells[b].querySelector('span')?.textContent || '';
-                let spanC = cells[c].querySelector('span')?.textContent || '';
-
-                // Verificamos si las tres celdas de la combinación tienen el mismo contenido y no están vacías
-                if (spanA !== '' && spanA === spanB && spanA === spanC) {
-                    console.log(`El jugador con ${spanA} ha ganado`);
-                    document.getElementById('info').textContent = `¡El jugador ${spanA} ha ganado!`;
-
-                    // Emitimos el evento al servidor indicando quién ha ganado
-                    socket.emit('gameWon', spanA );
-                    return spanA;  // Retornamos el símbolo del ganador ("X" o "O")
-                }
-            }
-
-            console.log("No hay ganador");
-            return null;
-        }
+       
 // Realizar un movimiento
         function makeMove(index) {
 
@@ -119,9 +87,7 @@ const winningCombinations = [
                 socket.emit('playerMove', index);
             }
         }
-        function langosta (){
-            console.log("langosta");
-        }
+        
         function updateBoard(casillasSeleccionadas) {
             // Actualizar la interfaz HTML para mostrar las casillas seleccionadas
 
@@ -142,7 +108,6 @@ const winningCombinations = [
            
             updateBoard(data);
 
-            checkWinnerMP();
         })
 
         socket.on('youWon', (winner) => {
@@ -158,6 +123,13 @@ const winningCombinations = [
 
             exitGame();
             resetBoard();
+        })
+
+        socket.on('gameOver', () => {
+            
+            document.getElementById('menu').style.display = 'block';
+            document.getElementById('multiplayer-board').style.display = 'none';
+            socket.emit('exitroom');
         })
      
           // Informar la desconexion del usuario 
