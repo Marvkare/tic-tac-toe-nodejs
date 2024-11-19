@@ -29,7 +29,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 handleSocketConnection(io);
 
-console.log(io)
+
 
 
 // Configurar la base de datos SQLite

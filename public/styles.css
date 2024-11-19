@@ -5,7 +5,7 @@
 /* INDEX CSS END */
 
 body {
-    background-color: #222;
+            background: #222;
             color: #fff;
             font-family: Arial, sans-serif;
             display: flex;
@@ -98,7 +98,7 @@ button {
 
 }
 
-.board_container{
+.board_container-MP{
     padding: 100px;
     display: flex;
     flex-direction: column;
@@ -123,6 +123,29 @@ button {
 
         
 .cell{
-    background: red;
-    color: white;
+    width: 100px;
+            height: 100px;
+            background-color: #444;
+            border: 3px solid #fff; /* Borde blanco */
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.cell:hover {
+            box-shadow: 0 0 20px #0ff, 0 0 40px #0ff; /* Efecto neón al pasar el cursor */
+        }
+.cell.selected {
+            box-shadow: 0 0 20px #fff, 0 0 40px #fff; /* Efecto neón blanco al seleccionar */
+        }
+#info-MP{
+    width: 300px;
+    background-color: #777;
+    padding: 10px;
+    border-radius: 2px;
 }

@@ -5,7 +5,7 @@
     z-index: 1; /* Asegura que esté delante */
     left: 0;
     top: 0;
-    width: 100%; /* Ancho completo */
+    width: 50%; /* Ancho completo */
     height: 100%; /* Alto completo */
     overflow: auto; /* Agregar scroll si es necesario */
     background-color: rgb(0,0,0); /* Color de fondo */

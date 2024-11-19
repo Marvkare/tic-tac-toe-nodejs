@@ -1,5 +1,9 @@
 //--------------------------    --------------- MULTIPLAYER -------------------//
 // Código para multijugador
+ const socket = io();
+        let myColor = null;
+        let isMyTurn = false;
+
 var colorBlue = "#3498db";
 var colorRed = "#e74c3c";
 var colorGray = "#95a5a6";
@@ -25,9 +29,7 @@ var colorGray = "#95a5a6";
 
        
         
-        const socket = io();
-        let myColor = null;
-        let isMyTurn = false;
+       
         
         //Codigo de infirmacion de los jugadores que entran a la sala 
         socket.on('playersroomInfo', (players) => {
@@ -45,17 +47,17 @@ var colorGray = "#95a5a6";
             console.log(currentTurn);
             isMyTurn = (currentTurn === myColor);
                 
-                let boardContainer = document.getElementById('board_container');
-
+                let boardContainer = document.getElementById('board_container-MP');
+                console.log(boardContainer); 
                 boardContainer.style.setProperty('background-color', isMyTurn ? (myColor === 'red' ? colorRed : colorBlue) : '#808080');
                 boardContainer.style.setProperty('display', 'flex');
                 boardContainer.style.setProperty('justify-content', 'center');
                 boardContainer.style.setProperty('align-items', 'center');
                 boardContainer.style.setProperty('padding', '10%');
                 if (isMyTurn) {
-                document.getElementById('info').textContent = 'Es tu turno';
+                document.getElementById('info-MP').textContent = 'Es tu turno UwU';
             } else {
-                document.getElementById('info').textContent = 'Es el turno del oponente';
+                document.getElementById('info-MP').textContent = 'Es el turno del oponente >_<';
             }
             toggleBoard(isMyTurn);
         });
@@ -102,7 +104,7 @@ var colorGray = "#95a5a6";
                 casilla.style.backgroundColor = movimiento.jugador === 'red' ? 'red' : 'blue';
                 casilla.classList.add('disabled');
             });
-            langosta();
+
         }
 
         socket.on('updateBoard', (data) => {
